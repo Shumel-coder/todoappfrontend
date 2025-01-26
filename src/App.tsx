@@ -31,6 +31,7 @@ const App: React.FC = () => {
   // Fetch Todos
   useEffect(() => {
     fetchTodos();
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchFilter, user]);
 
   const fetchTodos = async () => {
