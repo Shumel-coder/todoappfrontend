@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import Login from "./Login";
 import "./App.css";
@@ -29,12 +29,7 @@ const App: React.FC = () => {
     "https://boiling-thicket-60899-05bdfce02845.herokuapp.com/api/todos";
 
   // Fetch Todos
-  useEffect(() => {
-    fetchTodos();
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchFilter, user]);
-
-  const fetchTodos = async () => {
+  const fetchTodos = useCallback(async () => {
     if (!user) return;
     try {
       console.log(`Fetching todos for user ${user.id}`);
@@ -44,7 +39,11 @@ const App: React.FC = () => {
     } catch (error) {
       console.error("Error fetching todos", error);
     }
-  };
+  }, [user]); // Add user as a dependency
+
+  useEffect(() => {
+    fetchTodos();
+  }, [searchFilter, user, fetchTodos]);
 
   const addTodo = async () => {
     if (!task.trim() || !user) {
